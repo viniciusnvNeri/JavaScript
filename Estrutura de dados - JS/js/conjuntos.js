@@ -1,99 +1,108 @@
-function Set(){
+// Conjunto (Set) é uma estrutura que armazena valores únicos, sem repetição
+// Ideal para operações como união, interseção, diferença e verificação de subconjunto
+
+function Set() {
     var items = {};
 
-    this.add = function(value){
-        //adiciona um novo item ao conjunto
-        if(!this.has(value)){
+    this.add = function(value) {
+        // Adiciona um novo valor ao conjunto, se ainda não existir
+        if (!this.has(value)) {
             items[value] = value;
             return true;
         }
         return false;
     }
 
-    this.delete = function(value){
-        //remove um valor do conjunto
-        if(this.has(value)){
+    this.delete = function(value) {
+        // Remove um valor do conjunto, se existir
+        if (this.has(value)) {
             delete items[value];
             return true;
         }
         return false;
     }
 
-    this.has = function(value){
-        //devolve se o valor existe ou não
+    this.has = function(value) {
+        // Verifica se o valor existe no conjunto
         return items.hasOwnProperty(value);
     }
 
-    this.clear = function(){
-        //remove todos os itens do conjunto
+    this.clear = function() {
+        // Remove todos os elementos do conjunto
         items = {};
     }
 
-    this.size = function(){
-        //devolve o tamanho do conjunto
+    this.size = function() {
+        // Retorna o número de elementos no conjunto
         return Object.keys(items).length;
     }
 
-    this.values = function(){
-        //retorna um array com todos os valores do conjunto
+    this.values = function() {
+        // Retorna todos os valores do conjunto em um array
         var values = [],
-        keys = Object.keys(items)
-        for(var i = 0; i < keys.length; i++){
+            keys = Object.keys(items);
+
+        for (var i = 0; i < keys.length; i++) {
             values.push(items[keys[i]]);
         }
-        return values
+
+        return values;
     }
 
-    this.union = function(otherSet){
+    this.union = function(otherSet) {
+        // Retorna um novo conjunto contendo a união dos dois conjuntos
         var unionSet = new Set(),
-        values = this.values()
+            values = this.values();
 
-        for(var i = 0; i < values.length; i++){
+        for (var i = 0; i < values.length; i++) {
             unionSet.add(values[i]);
         }
 
-        values = otherSet.values()
-        for(var i = 0; i < values.length; i++){
+        values = otherSet.values();
+        for (var i = 0; i < values.length; i++) {
             unionSet.add(values[i]);
         }
 
-        return unionSet
+        return unionSet;
     }
 
-    this.intersection = function(otherSet){
+    this.intersection = function(otherSet) {
+        // Retorna um novo conjunto contendo os valores em comum entre os conjuntos
         var intersectionSet = new Set(),
-        values = this.values()
+            values = this.values();
 
-        for(var i = 0; i < values.length; i++){
-            if(otherSet.has(values[i])){
+        for (var i = 0; i < values.length; i++) {
+            if (otherSet.has(values[i])) {
                 intersectionSet.add(values[i]);
             }
         }
 
-        return intersectionSet
+        return intersectionSet;
     }
 
-    this.difference = function(otherSet){
+    this.difference = function(otherSet) {
+        // Retorna um novo conjunto com os valores presentes neste conjunto
+        // mas não no outro
         var differenceSet = new Set(),
-        values = this.values()
+            values = this.values();
 
-        for(var i = 0; i < values.length; i++){
-            if(!otherSet.has(values[i])){
+        for (var i = 0; i < values.length; i++) {
+            if (!otherSet.has(values[i])) {
                 differenceSet.add(values[i]);
             }
         }
 
-        return differenceSet
+        return differenceSet;
     }
 
-    this.subset = function(otherSet){
-        //verifica se o conjunto é um subconjunto de outro conjunto
-        if(this.size() > otherSet.size()){
+    this.subset = function(otherSet) {
+        // Verifica se este conjunto é subconjunto do outro
+        if (this.size() > otherSet.size()) {
             return false;
-        } else{
-            var values = this.values()
-            for(var i = 0; i < values.length; i++){
-                if(!otherSet.has(values[i])){
+        } else {
+            var values = this.values();
+            for (var i = 0; i < values.length; i++) {
+                if (!otherSet.has(values[i])) {
                     return false;
                 }
             }
@@ -102,38 +111,31 @@ function Set(){
     }
 }
 
-// var set = new Set();
-// set.add(1);
-// set.add(2);
-// set.add(3);
-// set.add(4);
-
-// console.log(set.values()); // [1, 2, 3, 4]
-// console.log(set.size()); // 4
-
-var setA = new Set()
+// Exemplo de uso:
+var setA = new Set();
 setA.add(1);
 setA.add(2);
 
-var setB = new Set()
+var setB = new Set();
 setB.add(1);
 setB.add(2);
 setB.add(3);
 
-var setC = new Set()
+var setC = new Set();
 setC.add(2);
 setC.add(3);
 setC.add(4);
 
-console.log(setA.subset(setB));
-console.log(setA.subset(setC));
+// Verifica se setA é subconjunto de setB e setC
+console.log(setA.subset(setB)); // true
+console.log(setA.subset(setC)); // false
 
-// var differenceSet = setA.difference(setB);//ele pega os elementos que estão em B subtrai os elementos que estão em A e retorna os que sobraram
-//                                           // ou seja, ele retorna os elementos que estão em A e não estão em B
-// console.log(differenceSet.values()); // [1]
+// Exemplos adicionais (descomente para testar):
+// var differenceSet = setA.difference(setB);
+// console.log(differenceSet.values()); // []
 
 // var intersectionSet = setA.intersection(setB);
-// console.log(intersectionSet.values()); // [2, 3]
+// console.log(intersectionSet.values()); // [1, 2]
 
-// var unionSet = setA.union(setB);
-// console.log(unionSet.values()); // [1, 2, 3, 4, 5, 6]
+// var unionSet = setA.union(setC);
+// console.log(unionSet.values()); // [1, 2, 3, 4]
