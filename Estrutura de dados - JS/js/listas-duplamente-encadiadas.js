@@ -1,173 +1,185 @@
-function doubluyLinkedList(){
-    var Node = function(element){
-        this.element = element
-        this.next = null
-        this.prev = null
+// Lista Duplamente Encadeada (Doubly Linked List)
+// Cada elemento (nó) tem ponteiro para o próximo e o anterior
+// Permite navegação em ambas direções
+
+function doubluyLinkedList() {
+    // Estrutura do nó com elemento, ponteiro para o próximo e o anterior
+    var Node = function(element) {
+        this.element = element;
+        this.next = null;
+        this.prev = null;
     }
 
-    var length = 0
-    var head = null
-    var tail = null
-    // A lista duplamente encadeada tem um ponteiro para o próximo e o anterior
+    var length = 0; // Tamanho da lista
+    var head = null; // Primeiro elemento
+    var tail = null; // Último elemento
 
-    this.append = function(element){
+    this.append = function(element) {
         // Adiciona um novo elemento ao final da lista
         var node = new Node(element),
-            current
-        if(head === null){
-            head = node
-            tail = node
+            current;
+
+        if (head === null) {
+            // Lista vazia
+            head = node;
+            tail = node;
         } else {
-            current = head
-            while(current.next){
-                current = current.next
+            // Lista já possui elementos
+            current = head;
+            while (current.next) {
+                current = current.next;
             }
-            current.next = node
-            tail = node
+            current.next = node;
+            node.prev = current;
+            tail = node;
         }
-        length++
+        length++;
     }
 
-    this.insert = function(position, element){
-        // Insere um novo elemento na posição especificada
-        if(position >= 0 && position <= length){
+    this.insert = function(position, element) {
+        // Insere um elemento na posição desejada
+        if (position >= 0 && position <= length) {
             var node = new Node(element),
-            current = head,
-            previous,
-            index = 0
-            
-            if(position === 0){
-                if(!head){
-                    head = node
-                    tail = node
+                current = head,
+                previous,
+                index = 0;
+
+            if (position === 0) {
+                // Inserção no início
+                if (!head) {
+                    head = node;
+                    tail = node;
                 } else {
-                    node.next = current
-                    current.prev = node
-                    head = node
+                    node.next = current;
+                    current.prev = node;
+                    head = node;
                 }
-            } else if (position === length){
-                current
-                current.next = node
-                node.prev = current
-                tail = node
+            } else if (position === length) {
+                // Inserção no final
+                current = tail;
+                current.next = node;
+                node.prev = current;
+                tail = node;
             } else {
-                while(index++ < position){
-                    previous = current
-                    current = current.next
+                // Inserção no meio
+                while (index++ < position) {
+                    previous = current;
+                    current = current.next;
                 }
-                node.next = current
-                previous.next = node
-                current.prev = node
-                node.prev = previous
+                node.next = current;
+                previous.next = node;
+                current.prev = node;
+                node.prev = previous;
             }
-            length++
-            return true  
+            length++;
+            return true;
         } else {
-            return false
+            return false;
         }
     }
 
-
-    this.removeAt = function(position){
-        // Remove o elemento na posição especificada
-        if(position > - 1 && position < length){
+    this.removeAt = function(position) {
+        // Remove elemento de uma posição específica
+        if (position > -1 && position < length) {
             var current = head,
-            previous,
-            index = 0
-            
-            if(position === 0){
-                head = current.next
+                previous,
+                index = 0;
 
-                if(length === 1){
-                    tail = null
+            if (position === 0) {
+                // Remove o primeiro
+                head = current.next;
+                if (length === 1) {
+                    tail = null;
                 } else {
-                    head.prev = null 
+                    head.prev = null;
                 }
-            } else if (position === length - 1){
-                current = tail
-                tail = current.prev
-                tail.next = null
+            } else if (position === length - 1) {
+                // Remove o último
+                current = tail;
+                tail = current.prev;
+                tail.next = null;
             } else {
-                while(index++ < position){
-                    previous = current
-                    current = current.next
+                // Remove do meio
+                while (index++ < position) {
+                    previous = current;
+                    current = current.next;
                 }
-                previous.next = current.next
-                current.next.prev = previous
+                previous.next = current.next;
+                current.next.prev = previous;
             }
-            length--
-            return current.element
+            length--;
+            return current.element;
         } else {
-            return null
+            return null;
         }
-        
     }
 
-    this.remove = function(element){
-        // Remove o elemento element
-        var index = this.indexOf(element)
-        return this.removeAt(index)
+    this.remove = function(element) {
+        // Remove elemento específico (por valor)
+        var index = this.indexOf(element);
+        return this.removeAt(index);
     }
 
-    this.indexOf = function(element){
-        // Retorna a posição do elemento
+    this.indexOf = function(element) {
+        // Retorna a posição de um elemento
         var current = head,
-        index = 0
+            index = 0;
 
-        while(current){
-            if(element === current.element){
-                return index
+        while (current) {
+            if (element === current.element) {
+                return index;
             }
-            index++
-            current = current.next
+            index++;
+            current = current.next;
         }
-        return -1
+        return -1;
     }
 
-    this.isEmpty = function(){
+    this.isEmpty = function() {
         // Verifica se a lista está vazia
-        return length === 0
+        return length === 0;
     }
 
-    this.size = function(){
+    this.size = function() {
         // Retorna o tamanho da lista
-        return length
+        return length;
     }
 
-    this.getHead = function(){
-        // Retorna o primeiro elemento da lista(head)
-        return head
+    this.getHead = function() {
+        // Retorna o primeiro nó da lista
+        return head;
     }
 
-    this.toString = function(){
-        // retorna uma string
+    this.toString = function() {
+        // Concatena todos os elementos numa string
         var current = head,
-            string = ''
-        
-        while(current){
-            string += current.element + ' '
-            current = current.next
+            string = '';
+
+        while (current) {
+            string += current.element + ' ';
+            current = current.next;
         }
-        return string
+        return string;
     }
 
-    this.print = function(){
-        // imprime a lista
-        console.log(this.toString())
+    this.print = function() {
+        // Imprime os elementos da lista
+        console.log(this.toString());
     }
-
 }
 
+// Exemplos de uso
+var list = new doubluyLinkedList();
+list.append('João');
+list.append('Maria');
+list.append('José');
+list.print(); // João Maria José
 
+list.insert(0, 'Ana');
+list.print(); // Ana João Maria José
 
-var list = new doubluyLinkedList()
-list.append('João')
-list.append('Maria')
-list.append('José')
-list.print() // João Maria José
-list.insert(0, 'Ana')
-list.print() // Ana João Maria José
-list.insert(2, 'Pedro')
-list.print() // Ana João Pedro Maria José
-list.removeAt(2)
-list.print() // Ana João Maria José
+list.insert(2, 'Pedro');
+list.print(); // Ana João Pedro Maria José
+
+list.removeAt(2); // Remove Pedro
+list.print(); // Ana João Maria José
