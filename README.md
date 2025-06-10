@@ -1,6 +1,6 @@
 # Estruturas de Dados em JavaScript 🧠💻
 
-Este repositório contém uma coleção de códigos simples e bem comentados sobre **estruturas de dados** implementadas em **JavaScript**, com foco em aprendizado e prática. Todos os exemplos são básicos e ideais para quem está começando (inclusive para mim mesmo no futuro 😄).
+Este repositório contém uma coleção de códigos simples e bem comentados sobre **estruturas de dados** implementadas em **JavaScript**, com foco em aprendizado e prática. Todos os exemplos são básicos e ideais para quem está começando.
 
 ## 📂 Conteúdo
 
